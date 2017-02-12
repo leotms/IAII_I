@@ -58,8 +58,6 @@ if __name__ =="__main__":
 
     filepath, iterations, alpha, isnormalize, isplot = parse_args(sys.argv)
 
-    print iterations
-
     # Reading the data and extracting the information from the columns
     data = np.loadtxt(filepath, delimiter=',')
 
@@ -93,7 +91,7 @@ if __name__ =="__main__":
 
     if (isplot):
 
-        if columns > 3 :
+        if columns >= 3 :
             print "This script doens't plot scatter vs funtion for more than two variables."
         if columns == 2:
 

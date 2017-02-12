@@ -63,9 +63,6 @@ def gradient_descent(X, y, theta, alpha, num_iters):
 
         theta_size = theta.size
 
-        if i == 1:
-            print pred
-
         for j in range(theta_size):
 
             temp = X[:, j]
