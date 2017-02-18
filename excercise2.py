@@ -61,8 +61,8 @@ def excercise1():
     plt.title('Cost vs. Iterations\nBrain Weight vs. Body Weight')
 
     #Calculate min and max cost
-    mincost = min(J_history)[0]
-    maxcost = max(J_history)[0]
+    mincost = np.min(J_history)
+    maxcost = np.max(J_history)
 
     info  = "Min cost: " + str(mincost) +"\nMax cost: " + str(maxcost) + "\nAlpha: " + str(alpha)
 
@@ -127,8 +127,8 @@ def excercise2():
     plt.title('Cost vs. Iterations\nMortality Rate: Murders per annum per 1.000.000 inhabitants')
 
     #Calculate min and max cost
-    mincost = min(J_history)[0]
-    maxcost = max(J_history)[0]
+    mincost = np.min(J_history)
+    maxcost = np.max(J_history)
 
     info  = "Min cost: " + str(mincost) +"\nMax cost: " + str(maxcost) + "\nAlpha: " + str(alpha)
 
@@ -159,8 +159,8 @@ def excercise2():
 
         theta, J_history = gradient_descent(interception, y, theta, alpha[0], iterations)
         #this plots the Coast Function vs the number of Iterations
-        mincost = min(J_history)[0]
-        maxcost = max(J_history)[0]
+        mincost = np.min(J_history)
+        maxcost = np.max(J_history)
         info    = "\nAlpha: " + str(alpha[0]) + ", mincost: " + str(mincost) +", maxcost: " + str(maxcost)
 
         p1 = plt.plot(np.arange(iterations), J_history, c=alpha[1], label = info)
