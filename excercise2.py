@@ -28,15 +28,16 @@ def readData(filepath):
 
     return data, X, y, columns, nExamples
 
-if __name__ =="__main__":
-    '''
-        Main function.
-    '''
+def excercise1():
+
     ## 1) Data contained in x01.txt. Body weight vs. Brain weight
     ## using aplha 0.1 and 100 iterations.
     filepath   = "./data/x01.txt"
     alpha      = 0.1
     iterations = 100
+
+    print "Using alpha 0.1 and 100 iterations."
+    print "close graphics to continue..."
 
     data, X, y, columns, nExamples = readData(filepath)
 
@@ -63,13 +64,15 @@ if __name__ =="__main__":
     mincost = min(J_history)[0]
     maxcost = max(J_history)[0]
 
-    info  = "Costo minimo: " + str(mincost) +"\nCosto maximo: " + str(maxcost) + "\nAlpha: " + str(alpha)
+    info  = "Min cost: " + str(mincost) +"\nMax cost: " + str(maxcost) + "\nAlpha: " + str(alpha)
 
     plt.figtext(0.4, 0.8, info,
             bbox=dict(facecolor = 'blue', alpha=0.2),
             horizontalalignment = 'left',
             verticalalignment   = 'center')
     plt.show()
+
+    ## Printing scatterplot vs Minimization Function
 
     fig = plt.figure()
     ax = fig.add_subplot()
@@ -90,3 +93,91 @@ if __name__ =="__main__":
     plt.legend(loc=2)
 
     plt.show()
+
+def excercise2():
+
+    ## 1) Data contained in x08.txt. Mortality Rate
+    ## using alpha 0.1 and 100 iterations.
+    filepath   = "./data/x08.txt"
+    alpha      = 0.1
+    iterations = 100
+
+    data, X, y, columns, nExamples = readData(filepath)
+
+    print "Using alpha 0.1 and 100 iterations."
+    print "close graphics to continue..."
+
+    #Normalization of the features
+    X, mean_r, std_r = normalize(X)
+
+    #Add Interception data (column of ones)
+    interception = np.ones(shape=(nExamples, columns))
+    interception[:, 1:columns] = X
+
+    #Init Theta and Run Gradient Descent
+    theta = np.zeros(shape=(columns, 1))
+
+    theta, J_history = gradient_descent(interception, y, theta, alpha, iterations)
+
+    #this plots the Coast Function vs the number of Iterations
+    p1 = plt.plot(np.arange(iterations), J_history)
+    #Labels
+    plt.xlabel('Iterations')
+    plt.ylabel('Cost Function')
+    plt.title('Cost vs. Iterations\nMortality Rate: Murders per annum per 1.000.000 inhabitants')
+
+    #Calculate min and max cost
+    mincost = min(J_history)[0]
+    maxcost = max(J_history)[0]
+
+    info  = "Min cost: " + str(mincost) +"\nMax cost: " + str(maxcost) + "\nAlpha: " + str(alpha)
+
+    plt.figtext(0.4, 0.8, info,
+            bbox=dict(facecolor = 'blue', alpha=0.2),
+            horizontalalignment = 'left',
+            verticalalignment   = 'center')
+    plt.show()
+
+    # Now we calculate for alphas (0.1, 03, 0.5, 0.7, 0.9, 1) and 100 iterations.
+    alphas = [[0.1,'g'],[0.3,'r'], [0.5,'b'], [0.7,'y'], [0.9,'c'], [1,'m']]
+
+    fig = plt.figure()
+    ax  = fig.add_subplot()
+
+    plt.xlabel('Iteraciones')
+    plt.ylabel('Cost Function')
+    plt.title('Cost vs. Iterations for different learning rates\nMortality Rate: Murders per annum per 1.000.000 inhabitants')
+
+    for alpha in alphas:
+
+        #Add Interception data (column of ones)
+        interception = np.ones(shape=(nExamples, columns))
+        interception[:, 1:columns] = X
+
+        #Init Theta and Run Gradient Descent
+        theta = np.zeros(shape=(columns, 1))
+
+        theta, J_history = gradient_descent(interception, y, theta, alpha[0], iterations)
+        #this plots the Coast Function vs the number of Iterations
+        mincost = min(J_history)[0]
+        maxcost = max(J_history)[0]
+        info    = "\nAlpha: " + str(alpha[0]) + ", mincost: " + str(mincost) +", maxcost: " + str(maxcost)
+
+        p1 = plt.plot(np.arange(iterations), J_history, c=alpha[1], label = info)
+
+    plt.legend(loc=1)
+    plt.show()
+
+if __name__ =="__main__":
+    '''
+        Main function.
+    '''
+
+    print "Starting Exc. 1..."
+    print "Body weight vs. Brain weight"
+    excercise1()
+    print "done."
+    print "Starting Exc. 2..."
+    print "Mortality Rate: Murders per annum per 1.000.000 inhabitants"
+    excercise2()
+    print "done."
