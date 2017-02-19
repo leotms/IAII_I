@@ -27,7 +27,8 @@ def normalize(X):
         s = np.std(X[:, i])
         vector_mean.append(m)
         vector_std.append(s)
-        XN[:, i] = (XN[:, i] - m) / s
+        XN[:,i]  = np.subtract(XN[:,i], m)
+        XN[:,i]  = np.divide(XN[:,i],s)
 
     return XN, vector_mean, vector_std
 
