@@ -4,7 +4,7 @@ from gradient_descent import *
 def readData(filepath):
 
     # Reading the data and extracting the information from the columns
-    data = np.loadtxt(filepath, delimiter=',')
+    data = np.loadtxt(filepath, delimiter=',', usecols=range(3,81))
 
     columns = data.shape[1]
 
@@ -17,7 +17,7 @@ def readData(filepath):
 
     return data, X, y, columns, nExamples
 
-def train(filepah):
+def train(filepath):
     'Returns the model obtained from using Gradient Descent over a training sample'
 
     ## using alpha 0.7 and 100 iterations.
@@ -94,8 +94,8 @@ if __name__ =="__main__":
     trainset = sys.argv[1]
     testset  = sys.argv[2]
 
-    model, mean, std = train(filepath)
+    model, mean, std = train(trainset)
 
     print "Model found: ", model
 
-    test(model, mean, std, filepath)
+    test(model, mean, std, testset)
