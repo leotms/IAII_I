@@ -430,7 +430,7 @@ if __name__ =="__main__":
 
     print "Cleaning..."
 
-    filepath   = "./data/Datos_Filtrados.csv"
+    filepath   = "./data/Datos_Filtrados_Final.csv"
     data = pd.read_csv(filepath)
 
     
@@ -440,5 +440,5 @@ if __name__ =="__main__":
 
     data2=pd.get_dummies(data,columns=columnsNominales)
 
-    data2.to_csv('./data/Datos_Filtrados_Result.csv', index=False)
+    data2.to_csv('./data/Datos_Filtrados_Final_Result.csv', index=False)
     print "done."
