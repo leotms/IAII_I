@@ -8,7 +8,7 @@ def readData(filepath):
 
     columns = data.shape[1]
 
-    X = data[:, 2:columns - 1] #stores features columns
+    X = data[:, :columns - 1] #stores features columns
     y = data[:,  columns - 1] #stores objective
 
     nExamples = y.size
@@ -21,8 +21,8 @@ def train(filepath):
     'Returns the model obtained from using Gradient Descent over a training sample'
 
     ## using alpha 0.7 and 100 iterations.
-    alpha      = 0.1
-    iterations = 1000
+    alpha      = 0.7
+    iterations = 100
 
     data, X, y, columns, nExamples = readData(filepath)
 
@@ -34,7 +34,7 @@ def train(filepath):
 
     #Add Interception data (column of ones)
     interception = np.ones(shape=(nExamples, columns))
-    interception[:, 1:columns - 2] = X
+    interception[:, 1:columns] = X
 
     #Init Theta and Run Gradient Descent
     theta = np.zeros(shape=(columns, 1))
@@ -99,4 +99,4 @@ if __name__ =="__main__":
     print "Model found: ", model
 
     #Testing Model
-    # test(model, mean, std, testset)
+    test(model, mean, std, testset)

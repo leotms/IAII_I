@@ -30,6 +30,7 @@ def normalize(X):
         XN[:,i]  = np.subtract(XN[:,i], m)
         XN[:,i]  = np.divide(XN[:,i],s)
 
+    np.savetxt("foo.csv", XN, delimiter=",")
     return XN, vector_mean, vector_std
 
 
