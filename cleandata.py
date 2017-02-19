@@ -12,6 +12,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from gradient_descent import *
 import pandas as pd
 import math
+import numpy as np
 
 ordinals={
     "Lot Shape":{
@@ -400,13 +401,21 @@ ordinals={
 
 def encode(col):
     nameColumn=list(col)[0];
+    print nameColumn
     for dt in col.values:
+        print type(dt[0])
+        si=False
         if type(dt[0])==float:
             if math.isnan(dt[0]):
                 dt[0]="NA" 
-        dt[0]=ordinals[nameColumn][dt[0]]
+        if isinstance(dt[0], np.float64):
+            print dt[0]
+            if math.isnan(dt[0]):
+                dt[0]=0
+                si=True
+        if not(si):
+            dt[0]=ordinals[nameColumn][dt[0]]
     
-
     return col
 
 if __name__ =="__main__":
@@ -423,7 +432,9 @@ if __name__ =="__main__":
     for col in data.columns:
         if not(data.dtypes[col]!="object"):
             data[[col]]=encode(data[[col]])
-
+        else:
+            if col=="Pool QC":   
+                data[[col]]=encode(data[[col]])
 
     data.to_csv('./data/Datos_Filtrados_Result.csv', index=False)
     print "done."
