@@ -1,18 +1,20 @@
 '''
-    File:        cleandata.py
+    File:        processdata.py
+    Description: given the data in a .csv file, returns the same file with
+                 ordinal an nominal values replaced.
     Authors:     Joel Rivas        #11-10866
                  Leonardo Martinez #11-10576
                  Nicolas Manan     #06-39883
-    Updated:     02/12/2017
+    Updated:     02/19/2017
 '''
 
 import sys
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from gradient_descent import *
 import pandas as pd
 import math
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+from gradient_descent import *
 
 ordinals={
     "Lot Shape":{
@@ -394,27 +396,27 @@ ordinals={
 
 }
 
-listOrdinals=["Lot Shape","Utilities","Land Slope","Exter Qual","Exter Cond","Bsmt Qual",
-"Bsmt Cond","Bsmt Exposure","BsmtFin Type 1","BsmtFin Type 2","Heating QC","Electrical",
-"Kitchen Qual","Functional","Fireplace Qu","Garage Finish","Garage Qual","Garage Cond",
-"Paved Drive","Pool QC","Fence"]
+ordinalColumns = ["Lot Shape","Utilities","Land Slope","Exter Qual",
+                  "Exter Cond","Bsmt Qual","Bsmt Cond","Bsmt Exposure",
+                  "BsmtFin Type 1","BsmtFin Type 2","Heating QC","Electrical",
+                  "Kitchen Qual","Functional","Fireplace Qu","Garage Finish",
+                  "Garage Qual","Garage Cond","Paved Drive","Pool QC","Fence"]
 
-columnsNominales=["MS SubClass","MS Zoning","Street","Alley","Land Contour","Lot Config",
-"Neighborhood","Condition 1","Condition 2","Bldg Type","House Style","Roof Style","Roof Matl",
-"Exterior 1st","Exterior 2nd","Mas Vnr Type","Foundation","Heating","Central Air",
-"Garage Type","Misc Feature","Sale Type","Sale Condition"]
+nominalColumns = ["MS SubClass","MS Zoning","Street","Alley","Land Contour",
+                  "Lot Config", "Neighborhood","Condition 1","Condition 2",
+                  "Bldg Type","House Style","Roof Style","Roof Matl","Exterior 1st",
+                  "Exterior 2nd","Mas Vnr Type","Foundation","Heating","Central Air",
+                  "Garage Type","Misc Feature","Sale Type"]
 
+# Encodes ordinal attributes
 def encode(col):
     nameColumn=list(col)[0];
-    print nameColumn
     for dt in col.values:
-        print type(dt[0])
         si=False
         if type(dt[0])==float:
             if math.isnan(dt[0]):
                 dt[0]="NA"
         if isinstance(dt[0], np.float64):
-            print dt[0]
             if math.isnan(dt[0]):
                 dt[0]=0
                 si=True
@@ -425,20 +427,29 @@ def encode(col):
 
 if __name__ =="__main__":
     '''
-        Clean Data.
+        Processdata Data.
     '''
 
-    print "Cleaning..."
-
-    filepath   = "./data/Datos_Filtrados_Final.csv"
+    filepath   = "./data/CleanDataset.csv"
     data = pd.read_csv(filepath)
 
+    print "Processing data in " + filepath
 
+    #Encode the ordinal columns
     for col in data.columns:
-        if col in listOrdinals:
+        if col in ordinalColumns:
             data[[col]]=encode(data[[col]])
 
-    data2=pd.get_dummies(data,columns=columnsNominales)
+    #Replace nominal columns
+    data2 = pd.get_dummies(data,columns=nominalColumns)
 
-    data2.to_csv('./data/Datos_Filtrados_Final_Result.csv', index=False)
-    print "done."
+    #Put the objective attribute "SalePrice" at the end
+    cols = list(data2.columns.values)
+    cols.remove("SalePrice")
+    cols.append("SalePrice")
+    data2 = data2[cols]
+
+    destfilepath = './data/CleanDatasetProcessed.csv'
+    data2.to_csv(destfilepath , index=False)
+
+    print "Done. Data saved in " + destfilepath

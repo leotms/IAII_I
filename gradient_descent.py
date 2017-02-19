@@ -5,7 +5,7 @@
     Authors:     Joel Rivas        #11-10866
                  Leonardo Martinez #11-10576
                  Nicolas Manan     #06-39883
-    Updated:     02/12/2017
+    Updated:     02/19/2017
 '''
 
 import numpy as np
@@ -30,7 +30,6 @@ def normalize(X):
         XN[:,i]  = np.subtract(XN[:,i], m)
         XN[:,i]  = np.divide(XN[:,i],s)
 
-    np.savetxt("foo.csv", XN, delimiter=",")
     return XN, vector_mean, vector_std
 
 
@@ -50,16 +49,16 @@ def cost(X, y, theta):
     return cost
 
 
-def gradient_descent(X, y, theta, alpha, num_iters):
+def gradient_descent(X, y, theta, alpha, iterations):
     '''
-    Performs gradient descent to learn theta
-    by taking num_items gradient steps with learning
-    rate alpha
+        Performs gradient descent to obtain a model theta
+        by taking iterations gradient steps with learning
+        rate alpha
     '''
     m = y.size
-    J_history = np.zeros(shape=(num_iters, 1))
+    J = np.zeros(shape=(iterations, 1))
 
-    for i in range(num_iters):
+    for i in range(iterations):
 
         pred = X.dot(theta)
 
@@ -74,6 +73,6 @@ def gradient_descent(X, y, theta, alpha, num_iters):
 
             theta[j][0] = theta[j][0] - alpha * (1.0 / m) * errors_x1.sum()
 
-        J_history[i, 0] = cost(X, y, theta)
+        J[i, 0] = cost(X, y, theta)
 
-    return theta, J_history
+    return theta, J

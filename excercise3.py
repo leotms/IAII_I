@@ -21,8 +21,8 @@ def train(filepath):
     'Returns the model obtained from using Gradient Descent over a training sample'
 
     ## using alpha 0.7 and 100 iterations.
-    alpha      = 0.7
-    iterations = 100
+    alpha      = 0.1
+    iterations = 10000
 
     data, X, y, columns, nExamples = readData(filepath)
 
@@ -39,7 +39,7 @@ def train(filepath):
     #Init Theta and Run Gradient Descent
     theta = np.zeros(shape=(columns, 1))
 
-    theta, J_history = gradient_descent(interception, y, theta, alpha, iterations)
+    theta, J = gradient_descent(interception, y, theta, alpha, iterations)
 
 
     return theta, mean, std
@@ -55,13 +55,20 @@ def test(model, mean, std, filepath):
 
     nRows =  data.shape[0]
     predictions = []
+    printInFile = []
     for row in range(nRows):
         vector = [1.0] #
         for i in range(len(X[row])):
             vector.append((X[row][i] - mean[i])/std[i])
         predicted = np.array(vector).dot(model)
         predictions.append(predicted)
-        print row, '\t', X[row], '\t' ,predicted, '\t', y[row]
+        print row, '\t' ,predicted[0], '\t', y[row][0]
+        printInFile.append([predicted[0],y[row][0]])
+
+
+
+    np.savetxt("predictedVSactual.csv", printInFile, delimiter=",")
+    print "Predicted results Vs. actual results for every test vector were saved in 'predictedVSactual.csv'."
 
     # Metrics
     # Bias: mean (predicted - y)
@@ -84,9 +91,6 @@ def test(model, mean, std, filepath):
     print "Mean Square Error: ", msq
 
 if __name__ =="__main__":
-    '''
-        Main function.
-    '''
 
     if len(sys.argv) < 3:
         raise Exception("ERROR: Missing arguments.")
@@ -96,7 +100,10 @@ if __name__ =="__main__":
 
     #Training the model
     model, mean, std = train(trainset)
-    print "Model found: ", model
+    np.savetxt("model.csv", model, delimiter=",")
+    print "A copy of the model was saved in 'model.csv'"
 
     #Testing Model
     test(model, mean, std, testset)
+
+    print "Done."

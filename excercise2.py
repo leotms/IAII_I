@@ -4,7 +4,7 @@
     Authors:     Joel Rivas        #11-10866
                  Leonardo Martinez #11-10576
                  Nicolas Manan     #06-39883
-    Updated:     02/12/2017
+    Updated:     02/19/2017
 '''
 
 import sys
@@ -13,7 +13,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from gradient_descent import *
 
 def readData(filepath):
-
+    '''
+        Reads the data from a file, containing all vectors.
+    '''
     # Reading the data and extracting the information from the columns
     data = np.loadtxt(filepath, delimiter=',')
 
@@ -29,6 +31,9 @@ def readData(filepath):
     return data, X, y, columns, nExamples
 
 def excercise1():
+    '''
+        Implements Excercise 1 activities.
+    '''
 
     ## 1) Data contained in x01.txt. Body weight vs. Brain weight
     ## using aplha 0.1 and 100 iterations.
@@ -51,18 +56,18 @@ def excercise1():
     #Init Theta and Run Gradient Descent
     theta = np.zeros(shape=(columns, 1))
 
-    theta, J_history = gradient_descent(interception, y, theta, alpha, iterations)
+    theta, J = gradient_descent(interception, y, theta, alpha, iterations)
 
     #this plots the Coast Function vs the number of Iterations
-    p1 = plt.plot(np.arange(iterations), J_history)
+    p1 = plt.plot(np.arange(iterations), J)
     #Labels
     plt.xlabel('Iterations')
     plt.ylabel('Cost Function')
     plt.title('Cost vs. Iterations\nBrain Weight vs. Body Weight')
 
     #Calculate min and max cost
-    mincost = np.min(J_history)
-    maxcost = np.max(J_history)
+    mincost = np.min(J)
+    maxcost = np.max(J)
 
     info  = "Min cost: " + str(mincost) +"\nMax cost: " + str(maxcost) + "\nAlpha: " + str(alpha)
 
@@ -96,6 +101,10 @@ def excercise1():
 
 def excercise2():
 
+    '''
+        Implements Excercise 2 activities.
+    '''
+
     ## 1) Data contained in x08.txt. Mortality Rate
     ## using alpha 0.1 and 100 iterations.
     filepath   = "./data/x08.txt"
@@ -117,18 +126,18 @@ def excercise2():
     #Init Theta and Run Gradient Descent
     theta = np.zeros(shape=(columns, 1))
 
-    theta, J_history = gradient_descent(interception, y, theta, alpha, iterations)
+    theta, J = gradient_descent(interception, y, theta, alpha, iterations)
 
     #this plots the Coast Function vs the number of Iterations
-    p1 = plt.plot(np.arange(iterations), J_history)
+    p1 = plt.plot(np.arange(iterations), J)
     #Labels
     plt.xlabel('Iterations')
     plt.ylabel('Cost Function')
     plt.title('Cost vs. Iterations\nMortality Rate: Murders per annum per 1.000.000 inhabitants')
 
     #Calculate min and max cost
-    mincost = np.min(J_history)
-    maxcost = np.max(J_history)
+    mincost = np.min(J)
+    maxcost = np.max(J)
 
     info  = "Min cost: " + str(mincost) +"\nMax cost: " + str(maxcost) + "\nAlpha: " + str(alpha)
 
@@ -157,21 +166,18 @@ def excercise2():
         #Init Theta and Run Gradient Descent
         theta = np.zeros(shape=(columns, 1))
 
-        theta, J_history = gradient_descent(interception, y, theta, alpha[0], iterations)
+        theta, J = gradient_descent(interception, y, theta, alpha[0], iterations)
         #this plots the Coast Function vs the number of Iterations
-        mincost = np.min(J_history)
-        maxcost = np.max(J_history)
+        mincost = np.min(J)
+        maxcost = np.max(J)
         info    = "\nAlpha: " + str(alpha[0]) + ", mincost: " + str(mincost) +", maxcost: " + str(maxcost)
 
-        p1 = plt.plot(np.arange(iterations), J_history, c=alpha[1], label = info)
+        p1 = plt.plot(np.arange(iterations), J, c=alpha[1], label = info)
 
     plt.legend(loc=1)
     plt.show()
 
 if __name__ =="__main__":
-    '''
-        Main function.
-    '''
 
     print "Starting Exc. 1..."
     print "Body weight vs. Brain weight"
