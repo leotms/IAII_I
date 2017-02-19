@@ -64,11 +64,6 @@ ordinals={
        "FR2":4,
        "FR3":5
     },
-    "Land Slope":{
-       "Gtl":3,
-       "Mod":2,
-       "Sev":1
-    },
     "Neighborhood":{
        "Blmngtn":1,
        "Blueste":2,
@@ -100,15 +95,15 @@ ordinals={
        "Veenker":28
     },
     "Condition 1":{
-       "Artery":1
-       "Feedr":2
+       "Artery":1,
+       "Feedr":2,
        "Norm":3,
        "RRNn":4,
        "RRAn":5,
        "PosN":6,
        "PosA":7,
        "RRNe":8,
-       "RRAe":9,
+       "RRAe":9
     },
     "Condition 2":{
        "Artery":1,
@@ -197,10 +192,10 @@ ordinals={
     },
     "Mas Vnr Type":{
        "BrkCmn":2,
-       "BrkFace":3
-       "CBlock":4
-       "None":1
-       "Stone":5
+       "BrkFace":3,
+       "CBlock":4,
+       "None":1,
+       "Stone":5,
        "NA":6
     },
     "Exter Qual":{
@@ -399,6 +394,16 @@ ordinals={
 
 }
 
+listOrdinals=["Lot Shape","Utilities","Land Slope","Exter Qual","Exter Cond","Bsmt Qual",
+"Bsmt Cond","Bsmt Exposure","BsmtFin Type 1","BsmtFin Type 2","Heating QC","Electrical",
+"Kitchen Qual","Functional","Fireplace Qu","Garage Finish","Garage Qual","Garage Cond",
+"Paved Drive","Pool QC","Fence"]
+
+columnsNominales=["MS SubClass","MS Zoning","Street","Alley","Land Contour","Lot Config",
+"Neighborhood","Condition 1","Condition 2","Bldg Type","House Style","Roof Style","Roof Matl",
+"Exterior 1st","Exterior 2nd","Mas Vnr Type","Foundation","Heating","Central Air",
+"Garage Type","Misc Feature","Sale Type","Sale Condition"]
+
 def encode(col):
     nameColumn=list(col)[0];
     print nameColumn
@@ -430,11 +435,10 @@ if __name__ =="__main__":
 
 
     for col in data.columns:
-        if not(data.dtypes[col]!="object"):
+        if col in listOrdinals:
             data[[col]]=encode(data[[col]])
-        else:
-            if col=="Pool QC":
-                data[[col]]=encode(data[[col]])
 
-    data.to_csv('./data/Datos_Filtrados_Result.csv', index=False)
+    data2=pd.get_dummies(data,columns=columnsNominales)
+
+    data2.to_csv('./data/Datos_Filtrados_Result.csv', index=False)
     print "done."

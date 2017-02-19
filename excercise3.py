@@ -4,11 +4,11 @@ from gradient_descent import *
 def readData(filepath):
 
     # Reading the data and extracting the information from the columns
-    data = np.loadtxt(filepath, delimiter=',', usecols = range(2,82))
+    data = np.loadtxt(filepath, delimiter=',', skiprows = 1)
 
     columns = data.shape[1]
 
-    X = data[:, :columns - 1] #stores features columns
+    X = data[:, 2:columns - 1] #stores features columns
     y = data[:,  columns - 1] #stores objective
 
     nExamples = y.size
@@ -21,8 +21,8 @@ def train(filepath):
     'Returns the model obtained from using Gradient Descent over a training sample'
 
     ## using alpha 0.7 and 100 iterations.
-    alpha      = 0.5
-    iterations = 10000
+    alpha      = 0.1
+    iterations = 1000
 
     data, X, y, columns, nExamples = readData(filepath)
 
@@ -34,7 +34,7 @@ def train(filepath):
 
     #Add Interception data (column of ones)
     interception = np.ones(shape=(nExamples, columns))
-    interception[:, 1:columns] = X
+    interception[:, 1:columns - 2] = X
 
     #Init Theta and Run Gradient Descent
     theta = np.zeros(shape=(columns, 1))
@@ -94,7 +94,9 @@ if __name__ =="__main__":
     trainset = sys.argv[1]
     testset  = sys.argv[2]
 
+    #Training the model
     model, mean, std = train(trainset)
-    test(model, mean, std, testset)
-
     print "Model found: ", model
+
+    #Testing Model
+    # test(model, mean, std, testset)
